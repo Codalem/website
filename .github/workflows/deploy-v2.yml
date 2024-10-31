@@ -1,0 +1,143 @@
+name: Build and deploy
+
+#on: [push]
+
+on:
+  workflow_dispatch:
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      new_app_path: ${{ steps.compute-path.outputs.new_app_path }}
+      old_app_path: ${{ steps.compute-path.outputs.old_app_path }}
+      port: ${{ steps.compute-port.outputs.port }}
+
+    steps:
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add VPS to known hosts
+        run: |
+          ssh-keyscan -H ${{ vars.SSH_ADDRESS }} >> ~/.ssh/known_hosts
+
+      - name: Compute path
+        id: compute-path
+        run: |
+          # Définition des chemins potentiels
+          app_path="${{ vars.app_path }}/${{ github.ref }}"
+          blue_path="${app_path}/blue"
+          green_path="${app_path}/green"
+
+          echo "Chemin blue: $blue_path"
+          echo "Chemin green: $green_path"
+
+          # Vérification de l'existence du chemin "blue" sur le serveur distant
+          if ssh -T "${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }}" "[ -d '$blue_path' ]"; then
+            echo "Old app is deployed on blue."
+
+            # Utilisation de guillemets pour éviter les conflits avec les slashes
+            echo "old_app_path=${blue_path}" >> $GITHUB_OUTPUT
+            echo "new_app_path=${green_path}" >> $GITHUB_OUTPUT
+          else
+            echo "Old app is deployed on green."
+
+            # Utilisation de guillemets pour éviter les conflits avec les slashes
+            echo "old_app_path=${green_path}" >> $GITHUB_OUTPUT
+            echo "new_app_path=${blue_path}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Find available port
+        id: compute-port
+        run: |
+          # Trouver un port aléatoire disponible entre 1024 et 65535
+          available_port=$(ssh ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} "comm -23 <(seq 1024 65535 | sort) <(ss -tan | awk '{print \$4}' | grep -oE '[0-9]+$' | sort -n | uniq)" | shuf -n 1)    
+          echo "Available port: $available_port"
+          echo "port=$available_port" >> "$GITHUB_OUTPUT"
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    needs: [prepare]
+    steps:
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add VPS to known hosts
+        run: |
+          ssh-keyscan -H ${{ vars.SSH_ADDRESS }} >> ~/.ssh/known_hosts
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compress files
+        run: tar -czf output.tar.gz -C ./.output .
+
+      - name: Ensure destination directory exists on VPS
+        run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} 'mkdir -p ${{ needs.prepare.outputs.new_app_path }}'
+
+      - name: Copy compressed files via SCP
+        run: scp ./output.tar.gz ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }}:${{ needs.prepare.outputs.new_app_path }}
+
+      - name: Decompress files on VPS
+        run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} 'tar -xzf ${{ needs.prepare.outputs.new_app_path }}/output.tar.gz -C ${{ needs.prepare.outputs.new_app_path }} && rm ${{ needs.prepare.outputs.new_app_path }}/output.tar.gz'
+
+      - name: Prepare Caddyfile and ecosystem.config.cjs
+        run: |
+          sed -i 's/%%PORT%%/${{ steps.select-port.outputs.port }}/g' ./output/Caddyfile
+          sed -i 's/%%DOMAIN%%/${{ vars.DOMAIN }}/g' ./output/Caddyfile
+          sed -i 's/%%APP_NAME%%/${{ steps.variables.outputs.new-app-name }}/g' ./output/ecosystem.config.cjs
+          sed -i 's/%%PORT%%/${{ steps.select-port.outputs.port }}/g' ./output/ecosystem.config.cjs
+
+      - name: Copy Caddyfile and ecosystem.config.cjs
+        run: |
+          scp ./output/Caddyfile ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }}:${{ needs.prepare.outputs.new_app_path }}
+          scp ./output/ecosystem.config.cjs ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }}:${{ needs.prepare.outputs.new_app_path }}
+
+      - name: Start new PM2 process
+        run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} 'cd ${{ needs.prepare.outputs.new_app_path }} && sudo pm2 start ./ecosystem.config.cjs && sudo pm2 save'
+
+      - name: Stop old https proxy
+        run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} 'cd ${{ needs.prepare.outputs.old_app_path }} && sudo caddy stop || echo "No old caddy configuration"'
+
+      - name: Run new https proxy
+        run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} 'cd ${{ needs.prepare.outputs.new_app_path }} && nohup sudo caddy start > caddy.log 2>&1 &'
+
+  remove-old-application:
+    runs-on: ubuntu-latest
+    needs: [build-and-deploy]
+    steps:
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add VPS to known hosts
+        run: |
+          ssh-keyscan -H ${{ vars.SSH_ADDRESS }} >> ~/.ssh/known_hosts
+
+      - name: Stop old PM2 process
+        run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} 'sudo pm2 stop ${{ needs.prepare.outputs.old_app_path }} && sudo pm2 save || echo "No process running"'
+
+      - name: Remove old files
+        run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} '[ -d ${{ needs.prepare.outputs.old_app_path }} ] && rm -rf ${{ needs.prepare.outputs.old_app_path }} || echo "No old files to remove"'

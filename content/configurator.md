@@ -8,7 +8,7 @@ Codalem
       <a class="no-underline hover:text-blue-200 text-lg" href="/">Home</a>
     </li>
     <li>
-      <a class="no-underline hover:text-blue-200 text-lg" href="#plus-dinformations">Contact</a>
+      <a class="no-underline hover:text-blue-200 text-lg" href="/#plus-dinformations">Contact</a>
     </li>
     <li>
       <a class="no-underline hover:text-blue-200 text-lg" target="_parent" href="https://fr.linkedin.com/company/codalem">News</a>

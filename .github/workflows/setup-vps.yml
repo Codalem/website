@@ -1,0 +1,43 @@
+name: Setup VPS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Add VPS to known hosts
+      run: |
+        ssh-keyscan -H ${{ vars.SSH_ADDRESS }} >> ~/.ssh/known_hosts
+
+    - name: Install Node.js 20 on VPS
+      run: |
+        ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} << 'EOF'
+          curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+        EOF
+
+    - name: Install PM2 on VPS
+      run: |
+        ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} << 'EOF'
+          sudo npm install -g pm2
+        EOF
+
+    - name: Install Caddy on VPS
+      run: |
+        ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} << 'EOF'
+          sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+          curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg 
+          curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list 
+          sudo apt update
+          sudo apt install caddy
+          sudo rm /etc/caddy/Caddyfile
+          sudo caddy reload
+        EOF

@@ -1,0 +1,102 @@
+name: Deploy to VPS
+
+on:
+    workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build the project
+      run: npm run build
+
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Add VPS to known hosts
+      run: |
+        ssh-keyscan -H ${{ vars.SSH_ADDRESS }} >> ~/.ssh/known_hosts
+
+    - name: Detect new and old ports from the server
+      id: select-port
+      run: |
+        PORT_A=${{ vars.PORT_A }}
+        PORT_B=${{ vars.PORT_B }}
+        PORT=$(ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} "ss -tuln | grep -q ':$PORT_A' && (ss -tuln | grep -q ':$PORT_B' && echo 'None' || echo $PORT_B) || echo $PORT_A")
+
+        if [ "$PORT" = "None" ]; then
+          echo "Both ports are in use on the server. Exiting."
+          exit 1
+        fi
+
+        if [ "$PORT" = "$PORT_A" ]; then
+          OLD_PORT=$PORT_B
+        else
+          OLD_PORT=$PORT_A
+        fi
+
+        echo "::set-output name=port::$PORT"
+        echo "::set-output name=old-port::$OLD_PORT"
+
+    - name: Prepare action variables
+      id: variables
+      run : |
+        echo "::set-output name=new-path::${{ vars.SSH_PATH }}/${{ steps.select-port.outputs.port }}"
+        echo "::set-output name=old-path::${{ vars.SSH_PATH }}/${{ steps.select-port.outputs.old-port }}"
+        echo "::set-output name=new-app-name::${{ vars.APP_NAME }}-${{ steps.select-port.outputs.port }}"
+        echo "::set-output name=old-app-name::${{ vars.APP_NAME }}-${{ steps.select-port.outputs.old-port }}"
+
+    - name: Prepare Caddyfile and ecosystem.config.cjs
+      run: |
+        sed -i 's/%%PORT%%/${{ steps.select-port.outputs.port }}/g' ./output/Caddyfile
+        sed -i 's/%%DOMAIN%%/${{ vars.DOMAIN }}/g' ./output/Caddyfile
+        sed -i 's/%%APP_NAME%%/${{ steps.variables.outputs.new-app-name }}/g' ./output/ecosystem.config.cjs
+        sed -i 's/%%PORT%%/${{ steps.select-port.outputs.port }}/g' ./output/ecosystem.config.cjs
+
+    - name: Add files to output
+      run: cp ./output/* ./.output/
+
+    - name: Ensure destination directory exists on VPS
+      run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} 'mkdir -p ${{ steps.variables.outputs.new-path }}'
+
+    - name: Compress files
+      run: tar -czf output.tar.gz -C ./.output .
+
+    - name: Copy compressed files via SCP
+      run: scp ./output.tar.gz ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }}:${{ steps.variables.outputs.new-path }}
+
+    - name: Remove old files
+      run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} 'find ${{ steps.variables.outputs.new-path }} -mindepth 1 ! -name "output.tar.gz" -delete'
+
+    - name: Decompress files on VPS
+      run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} 'tar -xzf ${{ steps.variables.outputs.new-path }}/output.tar.gz -C ${{ steps.variables.outputs.new-path }} && rm ${{ steps.variables.outputs.new-path }}/output.tar.gz'
+
+    - name: Restart PM2 process
+      run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} 'cd ${{ steps.variables.outputs.new-path }} && sudo pm2 start ./ecosystem.config.cjs && sudo pm2 save'
+
+    - name: Stop https proxy
+      run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} 'cd ${{ steps.variables.outputs.old-path }} && sudo caddy stop || echo "No old caddy configuration"'
+
+    - name: Run https proxy
+      run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} 'cd ${{ steps.variables.outputs.new-path }} && nohup sudo caddy start > caddy.log 2>&1 &'
+
+    - name: Stop old PM2 process
+      run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} 'sudo pm2 stop ${{ steps.variables.outputs.old-app-name }} && sudo pm2 save || echo "No process running"'
+
+    - name: Remove old files
+      run: ssh -T ${{ vars.SSH_USER }}@${{ vars.SSH_ADDRESS }} '[ -d ${{ steps.variables.outputs.old-path }} ] && rm -rf ${{ steps.variables.outputs.old-path }} || echo "No old files to remove"'
+
