@@ -1,33 +1,23 @@
 <template>
-  <article class="flex flex-col md:flex-row items-center md:space-x-6 space-y-4 md:space-y-0 mx-5 mt-5 pb-6">
+  <icon>
     <nuxt-img
       v-if="src && imagePosition == 'left'"
       :width="w" :height="h"
       :src="src" :alt="alt"
       class="h-auto rounded-lg mx-auto md:mx-0"
       :class="{
+        downloadIcon,
         grayscale
       }"
     />
-    <div class="text-base leading-relaxed text-center md:text-left">
-      <slot />
-    </div>
-    <nuxt-img
-      v-if="src && imagePosition == 'right'"
-      :width="w" :height="h"
-      :src="src" :alt="alt"
-      class="h-auto rounded-lg mx-auto md:mx-0"
-      :class="{
-        grayscale
-      }"
-    />
-  </article>
+  </icon>
 </template>
 
 <script lang="ts" setup>
 const {
   imagePosition = 'left',
   classSize = 'w-48',
+  downloadIcon = false,
   grayscale = false
 } = defineProps<{
   src?: string
@@ -36,9 +26,16 @@ const {
   grayscale?: boolean
   w?: number
   h?: number
+  downloadIcon?: boolean
   classSize?: string
 }>()
 </script>
 
-<style>
+<style scoped>
+img {
+  display: inline-block;
+  width: 32px;
+  vertical-align: top;
+}
+
 </style>

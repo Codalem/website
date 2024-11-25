@@ -53,15 +53,15 @@ h2:after {
   height: 40px;
   background-color: #FFF;
 }
-h2.reverse {
+h2.reverse, .bg-codalem-blue h2 {
   color: #FFF;
   background-color: #222d5a;
 }
-h2.reverse:before {
+h2.reverse:before, .bg-codalem-blue h2:before {
   color: #222d5a;
   border-color: #FFF;
 }
-h2.reverse:after {
+h2.reverse:after, .bg-codalem-blue h2:after {
   background-color: #222d5a;
 }
 </style>

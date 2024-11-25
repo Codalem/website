@@ -1,5 +1,4 @@
-::custom-header{src="/codalem_white.png"}
-Codalem
+::custom-header-codalem
 ::
 
 <nav class="bg-codalem-blue pb-3 mb-0">
@@ -50,11 +49,16 @@ Convertissez !
 ## Plus d'informations
 
 ::custom-article
-Pour **plus d'informations** vous pouvez télécharger notre [Support de présentation](/Deck_CODALEM.pdf){style="color: #222d5a; font-weight: 800; font-size: 1.1em"}.
+Pour **plus d'informations** vous pouvez télécharger notre
+<a style="color: #222d5a; font-weight: 800; font-size: 1.2em" href="../public/Deck_CODALEM.pdf">
+<custom-icon src="../public/assets/icons/download.svg" class="downloadIcon"></custom-icon>
+Support de présentation
+</a>.
 Il explique en plus en détail comment Codalem pourrait répondre à votre besoin spécifique !
 ::
 
 ::custom-button{href="mailto:contact@codalem.com"}
+<custom-icon src="../public/assets/icons/envelope.svg"></custom-icon>
 Nous contacter !
 ::
 
@@ -127,3 +131,10 @@ Leadership
 Copyright - Codalem - 2024
 ::
 
+<style scoped>
+.downloadIcon img {
+  width: 22px;
+  vertical-align: text-bottom;
+  margin: 0px 3px 0px 5px;
+}
+</style>
