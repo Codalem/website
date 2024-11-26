@@ -50,15 +50,15 @@ Convertissez !
 
 ::custom-article
 Pour **plus d'informations** vous pouvez télécharger notre
-<a style="color: #222d5a; font-weight: 800; font-size: 1.2em" href="../public/Deck_CODALEM.pdf">
-<custom-icon src="../public/assets/icons/download.svg" class="downloadIcon"></custom-icon>
+<a style="color: #222d5a; font-weight: 800; font-size: 1.2em" href="/Deck_CODALEM.pdf">
+<custom-icon src="/assets/icons/download.svg" class="downloadIcon"></custom-icon>
 Support de présentation
 </a>.
 Il explique en plus en détail comment Codalem pourrait répondre à votre besoin spécifique !
 ::
 
 ::custom-button{href="mailto:contact@codalem.com"}
-<custom-icon src="../public/assets/icons/envelope.svg"></custom-icon>
+<custom-icon src="/assets/icons/envelope.svg"></custom-icon>
 Nous contacter !
 ::
 

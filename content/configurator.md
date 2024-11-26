@@ -30,18 +30,18 @@ Découvrez comment nos outils de configuration offrent une visualisation en temp
 <h2>
 Découvrez les avantages d’un outil de configuration :
 </h2>
-<div class="flex flex-wrap justify-center items-center gap-x-10 gap-y-5 mx-24">
-<cta-icon src="../public/assets/VisuBlanc.svg" target="_parent" href="#Visualisation" alt="Visualisation"></cta-icon>
-<cta-icon src="../public/assets/ConversionBlanc.svg" target="_parent" href="#Conversion" alt="Conversion"></cta-icon>
-<cta-icon src="../public/assets/UXBlanc.svg" target="_parent" href="#UX" alt="UX"></cta-icon>
-<cta-icon src="../public/assets/GestionBlanc.svg" target="_parent" href="#Gestion" alt="Gestion"></cta-icon>
+<div class="flex flex-wrap justify-center items-center gap-x-10 gap-y-5 mx-2">
+<cta-icon src="/assets/VisuBlanc.svg" target="_parent" href="#Visualisation" alt="Visualisation"></cta-icon>
+<cta-icon src="/assets/ConversionBlanc.svg" target="_parent" href="#Conversion" alt="Conversion"></cta-icon>
+<cta-icon src="/assets/UXBlanc.svg" target="_parent" href="#UX" alt="UX"></cta-icon>
+<cta-icon src="/assets/GestionBlanc.svg" target="_parent" href="#Gestion" alt="Gestion"></cta-icon>
 </div>
 </div>
 
 <div id="Visualisation" class="slide-right delay-2">
 <h2>Visualisation</h2>
 <h3>Donnez vie à vos produits grâce à une visualisation interactive en temps réel</h3>
-<custom-article src="../public/assets/watch-configurator.png" w="500" >
+<custom-article src="/assets/watch-configurator.png" w="500" >
 Offrez à vos clients une <b>expérience immersive</b> : visualisation du produit en deux dimensions, personnalisation des couleurs, textures ou options en temps réel.
 Facilitez la <b>prise de décision</b> avec des <b>visuels fidèles</b>.
 Attirez l’attention de vos clients avec des <b>outils interactifs modernes</b> qui les plongent dans l’univers de vos produits.
@@ -78,7 +78,7 @@ Améliorez vos taux de conversion avec des configurations rapides, précises et 
 <div id="UX" class="slide-right delay-4">
 <h2>Expérience utilisateur</h2>
 <h3>Offrez une véritable expérience d’achat</h3>
-<custom-article src="../public/assets/design-bro.svg" w="300" image-position="right">
+<custom-article src="/assets/design-bro.svg" w="300" image-position="right">
 Offrez une <b>interface élégante et conçue pour vos clients</b>.
 Permettez une navigation simple et intuitive.
 Construisez une expérience qui <b>fidélise et impressionne vos utilisateurs</b> à chaque interaction.
@@ -99,14 +99,14 @@ Recevez directement la <b>confirmation de commande</b> avec la configuration sou
 ::custom-article
 Contactez nous pour échanger sur votre projet et pour planifier une démonstration !
 Téléchargez notre </custom-icon>
-<a style="color: #222d5a; font-weight: 800; font-size: 1.2em" href="../public/Deck_CODALEM.pdf">
-<custom-icon src="../public/assets/icons/download.svg" class="downloadIcon"></custom-icon>
+<a style="color: #222d5a; font-weight: 800; font-size: 1.2em" href="/Deck_CODALEM.pdf">
+<custom-icon src="/assets/icons/download.svg" class="downloadIcon"></custom-icon>
 Support de présentation
 </a>
 . Ou envoyez-nous un e-mail grâce au bouton ci-dessous.
 ::
 ::custom-button{href="mailto:contact@codalem.com"}
-<custom-icon src="../public/assets/icons/envelope.svg"></custom-icon>
+<custom-icon src="/assets/icons/envelope.svg"></custom-icon>
 Nous contacter !
 ::
 
