@@ -1,7 +1,7 @@
 <template>
   <div class="bg-codalem-blue flex justify-center items-start p-10 mb-0 sm:p-20 w-full codalem-logo-container">
-    <nuxt-img :src="'./codalem_white_nobar.png'" class="max-h-32 codalem-logo-nobar swing-in-bottom-bck" />
-    <nuxt-img :src="'./codalem_white.png'" class="max-h-32 codalem-logo reveal px-10 sm:px-20 w-full" />
+    <nuxt-img :src="'/codalem_white_nobar.png'" class="max-h-32 codalem-logo-nobar swing-in-bottom-bck" />
+    <nuxt-img :src="'/codalem_white.png'" class="max-h-32 codalem-logo reveal px-10 sm:px-20 w-full" />
     <h1 class="text-center text-6xl p-10">
       Codalem
     </h1>
