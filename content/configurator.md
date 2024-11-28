@@ -99,7 +99,7 @@ Recevez directement la <b>confirmation de commande</b> avec la configuration sou
 ::custom-article
 Contactez nous pour échanger sur votre projet et pour planifier une démonstration !
 Téléchargez notre </custom-icon>
-<a style="color: #222d5a; font-weight: 800; font-size: 1.2em" href="/Deck_CODALEM.pdf">
+<a style="color: #222d5a; font-weight: 800; font-size: 1.2em" target="_blank" href="/Deck_CODALEM.pdf">
 <custom-icon src="/assets/icons/download.svg" class="downloadIcon"></custom-icon>
 Support de présentation
 </a>
