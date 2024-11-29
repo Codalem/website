@@ -1,19 +1,8 @@
 ::custom-header-codalem
 ::
 
-<nav class="bg-codalem-blue pb-3 mb-0">
-  <ul class="flex flex-wrap justify-center gap-x-20">
-    <li>
-      <a class="no-underline hover:text-blue-200 text-lg" href="/">Home</a>
-    </li>
-    <li>
-      <a class="no-underline hover:text-blue-200 text-lg" href="/#plus-dinformations">Contact</a>
-    </li>
-    <li>
-      <a class="no-underline hover:text-blue-200 text-lg" target="_blank" href="https://fr.linkedin.com/company/codalem">News</a>
-    </li>
-  </ul>
-</nav>
+::custom-navbar
+::
 
 ::custom-article{src="/image_confighome.webp" alt="Projet ConfigHome" w=400}
 Nous concevons des **outils de configuration en ligne**.
