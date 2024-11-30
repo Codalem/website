@@ -1,9 +1,3 @@
-::custom-header-codalem
-::
-
-::custom-navbar
-::
-
 <!-- Introduction -->
 <div class="slide-right delay-0">
 <h2>Transformez la configuration de vos produits en une véritable expérience !</h2>

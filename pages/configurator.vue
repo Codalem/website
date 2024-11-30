@@ -1,7 +1,5 @@
 <template>
-  <div class="scroll-smooth">
-    <ContentDoc />
-  </div>
+  <ContentDoc />
 </template>
 
 <style>

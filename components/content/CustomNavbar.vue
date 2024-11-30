@@ -2,16 +2,16 @@
   <nav class="bg-codalem-blue pb-3 mb-0">
     <ul class="flex flex-wrap justify-center gap-x-20">
       <li>
-        <a class="cursor-pointer no-underline hover:text-blue-200 text-lg" href="/">Home</a>
+        <NuxtLink class="cursor-pointer no-underline hover:text-blue-200 text-lg" to="/">Home</NuxtLink>
       </li>
       <li>
-        <a class="cursor-pointer no-underline hover:text-blue-200 text-lg" href="/#plus-dinformations">Contact</a>
+        <NuxtLink class="cursor-pointer no-underline hover:text-blue-200 text-lg" to="/#plus-dinformations">Contact</NuxtLink>
       </li>
       <li>
         <a class="cursor-pointer no-underline hover:text-blue-200 text-lg" target="_parent" href="https://fr.linkedin.com/company/codalem">News</a>
       </li>
       <li>
-        <a class="cursor-pointer no-underline hover:text-blue-200 text-lg" href="/configurator">Avantages</a>
+        <NuxtLink class="cursor-pointer no-underline hover:text-blue-200 text-lg" to="/configurator">Avantages</NuxtLink>
       </li>
     </ul>
 </nav>

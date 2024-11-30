@@ -1,9 +1,3 @@
-::custom-header-codalem
-::
-
-::custom-navbar
-::
-
 ::custom-article{src="/image_confighome.webp" alt="Projet ConfigHome" w=400}
 Nous concevons des **outils de configuration en ligne**.
 
