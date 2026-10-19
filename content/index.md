@@ -1,53 +1,49 @@
-::custom-article{src="/image_confighome.webp" alt="Projet ConfigHome" w=400}
-Nous concevons des **outils de configuration en ligne**.
+::custom-article
+Codalem, c'est notre **bac à sable**.
 
-Vous souhaitez vendre des **produits personnalisés** et/ou **configurables** ?
+Après une première aventure autour des configurateurs en ligne, nous avons choisi de faire de Codalem un **terrain d'expérimentation** : un espace où nous imaginons, construisons et lançons des **projets divers et variés**.
 
-Nous développons selon vos envies un configurateur **simple** et **efficace**.
-
-Nous vous accompagnons tout au long du processus de **création** et de **déploiement** d'une **interface de personnalisation web** correspondant à votre coeur de métier.
+Jeux vidéo, outils web, prototypes… Chaque projet est porté par un membre de l'équipe, de l'**idée** jusqu'à la **mise en ligne**.
 ::
 
 <h2 class="reverse">
-Convertissez !
+Notre façon de faire
 </h2>
 
-<div class="bg-codalem-blue flex flex-center justify-center flex-wrap pb-10 gap-20">
-  <div class="flex flex-col items-center">
-    <span class="text-6xl font-bold">60%</span>
-    <span>de taux d’intérêt supplémentaire</span>
+<div class="bg-codalem-blue flex flex-center justify-center flex-wrap pb-10 gap-20 px-5">
+  <div class="flex flex-col items-center max-w-xs text-center">
+    <span class="text-4xl font-bold">Explorer</span>
+    <span>Tester des idées, des technologies et des plateformes, sans nous imposer de cadre.</span>
   </div>
-  <div class="flex flex-col items-center">
-    <span class="text-6xl font-bold">27%</span>
-    <span>de réduction du délai de conversion</span>
+  <div class="flex flex-col items-center max-w-xs text-center">
+    <span class="text-4xl font-bold">Construire</span>
+    <span>Chaque projet a son Product Owner, qui le porte de bout en bout.</span>
   </div>
-  <div class="flex flex-col items-center">
-    <span class="text-6xl font-bold">40%</span>
-    <span>de taux de conversion supplémentaire</span>
+  <div class="flex flex-col items-center max-w-xs text-center">
+    <span class="text-4xl font-bold">Lancer</span>
+    <span>Sortir de vrais produits, les confronter à de vrais utilisateurs, et apprendre.</span>
   </div>
 </div>
+
+## Nos derniers projets
+
+::project-list{limit="3"}
 ::
 
+::custom-button{href="/projects"}
+Voir tous les projets
+::
 
 ## Plus d'informations
 
 ::custom-article
-Pour **plus d'informations** vous pouvez télécharger notre
-<a style="color: #222d5a; font-weight: 800; font-size: 1.2em" target="_blank" href="/Deck_CODALEM.pdf">
-<custom-icon src="/assets/icons/download.svg" class="downloadIcon"></custom-icon>
-Support de présentation
-</a>.
-Il explique en plus en détail comment Codalem pourrait répondre à votre besoin spécifique !
+Une idée, une question, une envie de collaborer sur un projet ? Prenons le temps **d'échanger**.
+Envoyez-nous un e-mail et nous prendrons contact avec vous !
 ::
 
 ::custom-button{href="mailto:contact@codalem.com"}
 <custom-icon src="/assets/icons/envelope.svg"></custom-icon>
 Nous contacter !
-::
-
-::custom-article
-Prenons le temps **d'échanger** autour de **votre produit**. Quelque soit le sujet, nous répondrons à **toutes vos questions**.
-Envoyez nous un e-mail et nous prendrons contact avec vous !
 ::
 
 
@@ -65,7 +61,6 @@ Leadership
   </li>
     <li>CTO - Directeur technique</li>
     <li>📍 Amiens</li>
-    <li>Architecte de la solution. Expert Back-End. Spécialiste en accessibilité web.</li>
   </ol>
 
   <ol class="w-1/4 min-w-32 text-center justify-center align-middle" style="text-align: -webkit-center">
@@ -77,7 +72,6 @@ Leadership
   </li>
     <li>CEO - Directeur général</li>
     <li>📍 Paris</li>
-    <li>Responsable Marketing. Responsable de la communication externe.</li>
   </ol>
 
   <ol class="w-1/4 min-w-32 text-center justify-center align-middle" style="text-align: -webkit-center">
@@ -89,7 +83,6 @@ Leadership
   </li>
     <li>COO - Directeur des opérations</li>
     <li>📍 Chicago</li>
-    <li>Responsable de la relation client. Expert Front-End.</li>
   </ol>
 
 </div>
@@ -111,13 +104,5 @@ Leadership
 
 ::custom-footer{linkedin="https://fr.linkedin.com/company/codalem"}
 
-Copyright - Codalem - 2024
+Copyright - Codalem - 2026
 ::
-
-<style scoped>
-.downloadIcon img {
-  width: 22px;
-  vertical-align: text-bottom;
-  margin: 0px 3px 0px 5px;
-}
-</style>
