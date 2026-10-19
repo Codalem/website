@@ -5,13 +5,13 @@
         <NuxtLink class="cursor-pointer no-underline hover:text-blue-200 text-lg" to="/">Home</NuxtLink>
       </li>
       <li>
-        <NuxtLink class="cursor-pointer no-underline hover:text-blue-200 text-lg" to="/#plus-dinformations">Contact</NuxtLink>
+        <NuxtLink class="cursor-pointer no-underline hover:text-blue-200 text-lg" to="/projects">Projets</NuxtLink>
       </li>
       <li>
         <a class="cursor-pointer no-underline hover:text-blue-200 text-lg" target="_parent" href="https://fr.linkedin.com/company/codalem">News</a>
       </li>
       <li>
-        <NuxtLink class="cursor-pointer no-underline hover:text-blue-200 text-lg" to="/configurator">Avantages</NuxtLink>
+        <NuxtLink class="cursor-pointer no-underline hover:text-blue-200 text-lg" to="/#plus-dinformations">Contact</NuxtLink>
       </li>
     </ul>
 </nav>

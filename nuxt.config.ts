@@ -12,7 +12,7 @@ export default defineNuxtConfig({
       meta: [
         {
           name: 'description',
-          content: 'Website Codalem'
+          content: 'Codalem, notre bac à sable pour concevoir et lancer des projets divers et variés.'
         }
       ],
       link: [
@@ -28,6 +28,9 @@ export default defineNuxtConfig({
     }
   },
   vue: {
+  },
+  routeRules: {
+    '/configurator': { redirect: { to: '/projects', statusCode: 301 } }
   },
   fonts: {
     defaults: {
